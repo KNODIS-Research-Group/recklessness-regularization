@@ -37,8 +37,8 @@ public class JeneticsSearch {
     private static double[] scores = null;
     private static PrintWriter outputCSV;
     private static PrintWriter outputPareto;
-    private static final int GENS = 2; // 150
-    private static final int POP = 5; // 100
+    private static final int GENS = 150;
+    private static final int POP = 100;
 
     public static void main(String[] args) throws Exception {
 
