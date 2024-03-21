@@ -14,7 +14,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JeneticsTestSplitError {
+public class TestSplitError {
 
     private static final String DATASET = "ml1m";
     private static boolean[] WITH_RECKLESSNESS = {true, false};
@@ -29,7 +29,7 @@ public class JeneticsTestSplitError {
         double[] scores = null;
 
         if (DATASET.equals("ml100k")) {
-            datamodel = BenchmarkDataModels.MovieLens1M();
+            datamodel = BenchmarkDataModels.MovieLens100K();
             scores = new double[]{1.0, 2.0, 3.0, 4.0, 5.0};
         } else if (DATASET.equals("ml1m")) {
             datamodel = BenchmarkDataModels.MovieLens1M();

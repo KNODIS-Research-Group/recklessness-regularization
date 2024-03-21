@@ -2,7 +2,6 @@ package es.upm.etsisi.knodis.recklessness;
 
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
 import es.upm.etsisi.cf4j.data.DataModel;
-import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.util.optimization.GridSearchCV;
 import es.upm.etsisi.cf4j.util.optimization.ParamsGrid;
 import es.upm.etsisi.knodis.recklessness.qualityMeasures.CummulativeCoverage;
@@ -20,18 +19,15 @@ import io.jenetics.ext.moea.Vec;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
-import io.jenetics.util.RandomRegistry;
 
 import java.io.*;
-import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class JeneticsSearch {
 
-    private static String DATASET = "ml100k";
-    private static boolean WITH_RECKLESSESS = false;
+    private static String DATASET = "ml1m";
+    private static boolean WITH_RECKLESSNESS = false;
     private static long SEED = 4815162342L;
     private static DataModel datamodel = null;
     private static double[] scores = null;
@@ -41,9 +37,6 @@ public class JeneticsSearch {
     private static final int POP = 100;
 
     public static void main(String[] args) throws Exception {
-
-        Random rand = new Random(SEED);
-        RandomRegistry.random(rand);
 
         if (DATASET.equals("ml100k")) {
             datamodel = BenchmarkDataModels.MovieLens100K();
@@ -63,7 +56,7 @@ public class JeneticsSearch {
 
         // Create directory for CSV results
         try {
-            File outputFile = new File(resultsPath + "/" + DATASET + "-jenetic-search-recklessness-" + ((WITH_RECKLESSESS) ? "yes" : "no") + ".csv");
+            File outputFile = new File(resultsPath + "/" + DATASET + "-jenetic-search-recklessness-" + ((WITH_RECKLESSNESS) ? "yes" : "no") + ".csv");
             outputCSV = new PrintWriter(outputFile);
             printHeader();
         } catch (IOException e) {
@@ -72,7 +65,7 @@ public class JeneticsSearch {
 
         // Create directory for Pareto results
         try {
-            File outputFile = new File(resultsPath + "/" + DATASET + "-pareto-front-recklessness-" + ((WITH_RECKLESSESS) ? "yes" : "no") + ".txt");
+            File outputFile = new File(resultsPath + "/" + DATASET + "-pareto-front-recklessness-" + ((WITH_RECKLESSNESS) ? "yes" : "no") + ".txt");
             outputPareto = new PrintWriter(outputFile);
         } catch (IOException e) {
             e.printStackTrace();
@@ -128,7 +121,7 @@ public class JeneticsSearch {
     private static final Genotype codec = getGenotype();
 
     private static Genotype getGenotype(){
-        Genotype codec = (WITH_RECKLESSESS)?
+        Genotype codec = (WITH_RECKLESSNESS)?
                             Genotype.of(
                                     (Chromosome) IntegerChromosome.of(0, 300),
                                     (Chromosome) IntegerChromosome.of(0, 200),
@@ -152,7 +145,7 @@ public class JeneticsSearch {
         final DoubleChromosome learningRateC = (DoubleChromosome) gt.get(3);
 
         DoubleChromosome recklessnessC = null;
-        if(WITH_RECKLESSESS)
+        if(WITH_RECKLESSNESS)
             recklessnessC = (DoubleChromosome) gt.get(4);
 
         final int numIters = numItersC.intValue();
@@ -161,7 +154,7 @@ public class JeneticsSearch {
         final double learningRate = learningRateC.doubleValue();
 
         double recklessness;
-        if(WITH_RECKLESSESS)
+        if(WITH_RECKLESSNESS)
             recklessness = recklessnessC.doubleValue();
         else
             recklessness = 0.0;
@@ -205,7 +198,7 @@ public class JeneticsSearch {
             out += gt.get(1).toString() + ";";
             out += gt.get(2).toString() + ";";
             out += gt.get(3).toString() + ";";
-            if(WITH_RECKLESSESS)
+            if(WITH_RECKLESSNESS)
                 out += gt.get(4).toString() + ";";
             out += result.population().get(i).fitness().data()[0] + ";";
             out += result.population().get(i).fitness().data()[1];
@@ -226,7 +219,7 @@ public class JeneticsSearch {
         out += "numFactors;";
         out += "regularization;";
         out += "learningRate;";
-        if(WITH_RECKLESSESS)
+        if(WITH_RECKLESSNESS)
             out += "recklessness;";
         out += "cumulativeMAE;";
         out += "cumulativeCoverage";
