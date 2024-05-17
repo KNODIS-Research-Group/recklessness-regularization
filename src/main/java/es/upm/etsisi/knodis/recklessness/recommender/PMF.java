@@ -240,6 +240,11 @@ public class PMF extends ProbabilistcRecommender {
         return 1;
     }
 
+    @Override
+    public double mean(int userIndex, int itemIndex) {
+        return this.predict(userIndex, itemIndex);
+    }
+
     /** Auxiliary inner class to parallelize user factors computation */
     private class UpdateUsersFactors implements Partible<User> {
 

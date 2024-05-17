@@ -242,6 +242,16 @@ public class BeMF extends ProbabilistcRecommender {
     }
 
     @Override
+    public double mean(int userIndex, int itemIndex) {
+        double mean = 0;
+        for (int s = 0; s < this.scores.length; s++) {
+            double prob = this.getProbability(userIndex, itemIndex, s);
+            mean += this.scores[s] * prob;
+        }
+        return mean;
+    }
+
+    @Override
     public String toString() {
         StringBuilder str = new StringBuilder("BeMF(")
                 .append("numFactors=").append(this.numFactors)

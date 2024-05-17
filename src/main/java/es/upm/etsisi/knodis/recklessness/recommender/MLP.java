@@ -358,4 +358,9 @@ public class MLP extends ProbabilistcRecommender {
     public double predictProba(int userIndex, int itemIndex) {
         return 1;
     }
+
+    @Override
+    public double mean(int userIndex, int itemIndex) {
+        return this.predict(userIndex, itemIndex);
+    }
 }

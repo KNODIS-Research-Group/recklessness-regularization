@@ -2,9 +2,10 @@ package es.upm.etsisi.knodis.recklessness;
 
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
 import es.upm.etsisi.cf4j.data.DataModel;
+import es.upm.etsisi.cf4j.recommender.knn.itemSimilarityMetric.Cosine;
+import es.upm.etsisi.cf4j.recommender.knn.itemSimilarityMetric.ItemSimilarityMetric;
 import es.upm.etsisi.cf4j.util.Maths;
-import es.upm.etsisi.knodis.recklessness.qualityMeasures.Coverage;
-import es.upm.etsisi.knodis.recklessness.qualityMeasures.MAE;
+import es.upm.etsisi.knodis.recklessness.qualityMeasures.*;
 import es.upm.etsisi.knodis.recklessness.recommender.*;
 import org.apache.commons.lang3.StringUtils;
 
@@ -16,10 +17,12 @@ import java.util.List;
 
 public class TestSplitError {
 
-    private static final String DATASET = "ml1m";
+    private static final String DATASET = "ml100k";
     private static boolean[] WITH_RECKLESSNESS = {true, false};
 
     private static double[] RELIABILITIES = Maths.linespace(0.0, 1.0, 20, false);
+
+    private static int NUMBER_OF_RECOMMENDATIONS = 10;
 
     private static long SEED = 4815162342L;
 
@@ -27,16 +30,20 @@ public class TestSplitError {
 
         DataModel datamodel = null;
         double[] scores = null;
+        Double like_threshold = null;
 
         if (DATASET.equals("ml100k")) {
             datamodel = BenchmarkDataModels.MovieLens100K();
             scores = new double[]{1.0, 2.0, 3.0, 4.0, 5.0};
+            like_threshold = 4.0;
         } else if (DATASET.equals("ml1m")) {
             datamodel = BenchmarkDataModels.MovieLens1M();
             scores = new double[]{1.0, 2.0, 3.0, 4.0, 5.0};
+            like_threshold = 4.0;
         } else if (DATASET.equals("ft")) {
             datamodel = BenchmarkDataModels.FilmTrust();
             scores = new double[]{0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0};
+            like_threshold = 3.0;
         }
 
         double maxDiff = scores[scores.length-1] - scores[0];
@@ -48,7 +55,7 @@ public class TestSplitError {
         symbols.setDecimalSeparator('.');
         DecimalFormat decimalFormat = new DecimalFormat("0.###########", symbols);
 
-        String header = "reliability;exec;1-mae;coverage;recklessness";
+        String header = "reliability;exec;1-mae;coverage;map;novelty;diversity;recklessness";
         csvWriter.append(header + "\n");
         csvWriter.flush();
 
@@ -71,6 +78,9 @@ public class TestSplitError {
 
                     double mae = new MAE(bemf, rel).getScore();
                     double coverage = new Coverage(bemf, rel).getScore();
+                    double map = new MAP(bemf, NUMBER_OF_RECOMMENDATIONS, like_threshold, rel).getScore();
+                    double novelty = new Novelty(bemf, NUMBER_OF_RECOMMENDATIONS, rel).getScore();
+                    double diversity = new Diversity(bemf, NUMBER_OF_RECOMMENDATIONS, rel).getScore();
 
                     String useRecklessness = "no";
                     if (withRecklessness)
@@ -80,6 +90,9 @@ public class TestSplitError {
                             + paretoIndex + ";"
                             + decimalFormat.format(1 - mae / maxDiff) + ";"
                             + decimalFormat.format(coverage) + ";"
+                            + decimalFormat.format(map) + ";"
+                            + decimalFormat.format(novelty) + ";"
+                            + decimalFormat.format(diversity) + ";"
                             + useRecklessness;
 
                     csvWriter.append(row + "\n");
