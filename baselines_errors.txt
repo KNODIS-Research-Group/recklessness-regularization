@@ -1,0 +1,50 @@
+# MovieLens 100K
+
+Fitting PMF(numFactors=6; numIters=100; gamma=0.01; lambda=0.1)
+..........100 iterations
+MAE score of PMF recommender=0.8145511777115231
+MAP score of PMF recommender=0.8604283693226823
+Novelty score of PMF recommender=9.67523933310254
+Diversity score of PMF recommender=0.9483274641721363
+
+Fitting MLP(numEpochs=100; learningRate=0.1; numFactors=2; layers=[20, 10])
+..........50 iterations
+..........100 iterations
+MAE score of MLP recommender=0.7676938539583461
+MAP score of PMF recommender=0.7338359500510673
+Novelty score of PMF recommender=9.845988773571856
+Diversity score of PMF recommender=0.9398487980152976
+
+# MovieLens 1M
+
+Fitting PMF(numFactors=10; numIters=100; gamma=0.01; lambda=0.1)
+..........100 iterations
+MAE score of PMF recommender=0.8217556524620753
+MAP score of PMF recommender=0.8911523098426334
+Novelty score of PMF recommender=10.26688608316095
+Diversity score of PMF recommender=0.957641709093456
+
+Fitting MLP(numEpochs=100; learningRate=0.1; numFactors=2; layers=[20, 10])
+..........50 iterations
+..........100 iterations
+MAE score of MLP recommender=0.8173338341921218
+MAP score of PMF recommender=0.8654222417122172
+Novelty score of PMF recommender=10.250783903410158
+Diversity score of PMF recommender=0.9589113520528457
+
+# FilmTrust
+
+Fitting PMF(numFactors=2; numIters=100; gamma=0.01; lambda=0.1)
+..........100 iterations
+MAE score of PMF recommender=0.7841889363378948
+MAP score of PMF recommender=0.8916924505598489
+Novelty score of PMF recommender=6.825836697185554
+Diversity score of PMF recommender=0.947267164657094
+
+Fitting MLP(numEpochs=100; learningRate=0.01; numFactors=8; layers=[20, 10])
+..........50 iterations
+..........100 iterations
+MAE score of MLP recommender=0.7977525049026042
+MAP score of PMF recommender=0.8846912541021632
+Novelty score of PMF recommender=6.851901616075828
+Diversity score of PMF recommender=0.9476854478204721

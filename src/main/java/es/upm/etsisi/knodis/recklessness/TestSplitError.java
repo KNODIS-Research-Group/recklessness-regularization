@@ -2,8 +2,6 @@ package es.upm.etsisi.knodis.recklessness;
 
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
 import es.upm.etsisi.cf4j.data.DataModel;
-import es.upm.etsisi.cf4j.recommender.knn.itemSimilarityMetric.Cosine;
-import es.upm.etsisi.cf4j.recommender.knn.itemSimilarityMetric.ItemSimilarityMetric;
 import es.upm.etsisi.cf4j.util.Maths;
 import es.upm.etsisi.knodis.recklessness.qualityMeasures.*;
 import es.upm.etsisi.knodis.recklessness.recommender.*;
